@@ -252,7 +252,6 @@ select {
     border: 1px solid var(--border-light);
     border-radius: var(--radius-md);
     font-size: 16px;
-    /* Prevents iOS zoom */
     font-family: inherit;
     outline: none;
     transition: var(--transition);
@@ -625,6 +624,7 @@ details.advanced[open] summary::after {
     margin-bottom: 24px;
     box-shadow: var(--shadow-lg);
     padding: 24px;
+    position: relative;
 }
 
 .status-text {
@@ -674,10 +674,6 @@ details.advanced[open] summary::after {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-}
-
-.preview-box {
-    position: relative;
 }
 
 .preview-box.has-caption #qrContainer {
@@ -850,8 +846,6 @@ details.advanced[open] summary::after {
 
 /* Mobile / Tablet Layout Fixes */
 @media (max-width: 860px) {
-
-    /* CRITICAL: Stack Preview on top on mobile/tablet for generate.html */
     .workspace {
         grid-template-columns: 1fr;
         display: flex;
@@ -1796,9 +1790,6 @@ select:focus {
     box-shadow: 0 0 0 4px rgba(139, 92, 246, .18)
 }
 
-/* QR content must stay comfortable to read while it is being entered.
-   Most dynamically-created fields have no explicit type, so they need this
-   selector in addition to the typed-input rules above. */
 #formArea input:not([type="file"]):not([type="range"]):not([type="color"]):not([type="checkbox"]):not([type="radio"]),
 #formArea textarea,
 #qrBranding {
@@ -2055,7 +2046,6 @@ footer {
     }
 }
 
-/* Keep the existing navigation available while scrolling without changing page flow. */
 .site-nav {
     position: sticky;
     top: 0;
@@ -2069,10 +2059,10 @@ footer {
     backdrop-filter: blur(16px);
 }
 
-/* `hidden` creates a scroll container in Chromium and can prevent sticky children
-   from sticking to the viewport. `clip` keeps the horizontal safeguard without that behavior. */
 .container {
-    overflow-x: clip
+    overflow-x: clip;
+    width: 100%;
+    max-width: 1000px;
 }
 
 @media(max-width:760px) {
@@ -2088,11 +2078,6 @@ footer {
     }
 }
 
-/* ============================================================
-   Compact QR type selector + Generate / Customize flow
-   ============================================================ */
-
-/* --- Type selector: small icon+name boxes instead of large cards --- */
 .type-grid.expanded {
     display: flex;
     flex-wrap: wrap;
@@ -2134,8 +2119,6 @@ footer {
     text-overflow: ellipsis;
 }
 
-/* Descriptions were dropped from the markup to keep the boxes compact;
-   this hides the rule for any cached/older markup that still includes it. */
 .type-card-desc {
     display: none;
 }
@@ -2179,7 +2162,6 @@ footer {
     }
 }
 
-/* --- Primary / Customize action row --- */
 .action-row {
     display: flex;
     gap: 12px;
@@ -2244,7 +2226,6 @@ footer {
     }
 }
 
-/* --- Customizer: hidden by default, smooth reveal on demand --- */
 .customizer-wrap {
     display: grid;
     grid-template-rows: 0fr;

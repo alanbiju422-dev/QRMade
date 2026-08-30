@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>QRMade — Your QR is Ready</title>
+    <meta name="description" content="Download your free QR code as PNG, SVG or PDF. No signup required.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+
+<body>
+    <div class="container result-container">
+        <nav class="site-nav"><a href="index.html" class="logo"><span class="logo-mark">▦</span>QRMade</a><a class="back-btn" href="index.html">← Back to editor</a></nav>
+        <main class="result-main">
+            <p class="eyebrow">YOUR QR IS READY</p>
+            <h1 id="status">Preparing your QR…</h1>
+            <p class="result-subtitle">Your <span id="resultType">QR</span> code is generated locally and ready to share.</p>
+            <section id="singleResult" class="result-card">
+                <div class="preview-box">
+                    <div id="qrContainer"></div>
+                    <p id="caption" class="qr-caption"></p>
+                </div>
+                <div class="result-info">
+                    <h2>QR information</h2>
+                    <p id="resultData"></p>
+                </div>
+                <div class="download-group"><button class="btn-download primary" id="downloadPNG" type="button">Download PNG</button><button class="btn-download" id="downloadSVG" type="button">Download SVG</button><button class="btn-download" id="downloadPDF" type="button">Download PDF</button></div>
+            </section>
+            <section id="batchResult" class="hidden">
+                <div class="batch-header">
+                    <div>
+                        <h2>Your batch is ready</h2>
+                        <p>Download each QR as PNG, SVG or PDF.</p>
+                    </div><button id="downloadAll" class="btn-download" type="button">Download all</button>
+                </div>
+                <div id="batchGrid" class="qr-batch-grid"></div>
+            </section><a href="index.html" class="btn-secondary generate-link">Generate another QR</a>
+            <p class="privacy-line">Generated in your browser. Nothing was uploaded.</p>
+        </main>
+        <footer>
+            <p>Everything you need to create QR codes. Completely free.</p>
+        </footer>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="script.js"></script>
+</body>
+
+</html>

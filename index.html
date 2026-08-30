@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>QRMade — Free QR Code Generator</title>
+    <meta name="description"
+        content="Create beautiful QR codes for links, text, Wi-Fi, contacts and more. Customize and download PNG, SVG and PDF QR codes completely free.">
+    <link rel="canonical" href="https://your-domain.example/">
+    <meta property="og:title" content="QRMade — Free QR Code Generator">
+    <meta property="og:description"
+        content="Every QRMade feature is free. Create, customize and download QR codes in seconds.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container wide">
+        <nav class="site-nav" aria-label="Main navigation"><a href="index.html" class="logo"><span
+                    class="logo-mark">▦</span>QRMade</a><button class="menu-button" id="menuButton"
+                aria-expanded="false" aria-controls="navLinks">Menu</button>
+            <div class="nav-links" id="navLinks"><a href="#generator">QR Generator</a><a href="#customize">QR
+                    Types</a><a href="#features">Features</a><a href="#how">How it works</a></div>
+        </nav>
+        <header class="hero">
+            <p class="eyebrow">QR GENERATION, WITHOUT THE CATCH</p>
+            <h1>Create beautiful QR codes.<br><span>Completely free.</span></h1>
+            <p>Generate, customize and download professional QR codes in seconds. No account, watermark, limits, or
+                payment details.</p><a class="hero-cta" href="#generator">Create a QR Code <span>→</span></a>
+            <div class="trust-badges"><span class="badge">✓ No signup</span><span class="badge">✓ No
+                    watermark</span><span class="badge">✓ Free forever</span><span class="badge">✓ Browser-based</span>
+            </div>
+        </header>
+        <main id="generator">
+            <section class="generator-heading">
+                <div>
+                    <p class="eyebrow">START HERE</p>
+                    <h2>What should your QR do?</h2>
+                    <p>Pick a type, add your details, then make it unmistakably yours.</p>
+                </div><label class="type-search">⌕ <input id="typeSearch" type="search" placeholder="Search QR type..."
+                        aria-label="Search QR types"></label>
+            </section>
+            <div class="type-grid expanded" id="typeGrid" role="list" aria-label="QR types"></div>
+            <p id="emptyTypes" class="empty-state hidden">No QR type found. Try “contact”, “Wi-Fi”, or “link”.</p>
+            <section class="form-panel">
+                <div id="formArea"></div>
+                <div class="action-row">
+                    <button class="btn-primary" id="continueBtn" type="button"><span>Generate QR</span> →</button>
+                    <button class="btn-customize" id="customizeToggleBtn" type="button" aria-expanded="false"
+                        aria-controls="customizerWrap"><span class="btn-customize-icon">🎨</span><span>Customize
+                            QR</span><span class="free-badge">FREE</span></button>
+                </div>
+                <div class="customizer-wrap" id="customizerWrap">
+                <div class="customizer" id="customize">
+                    <div class="customizer-header">
+                        <div>
+                            <p class="eyebrow">MAKE IT YOURS</p>
+                            <h2>Customize your QR</h2>
+                        </div><span class="free-pill">Everything is free</span>
+                    </div>
+                    <div class="template-row" id="templateRow"></div>
+                    <div class="custom-grid">
+                        <div class="swatch-group"><label class="label">QR color <input type="color" id="customQrColor"
+                                    value="#172033" aria-label="Custom QR color"></label>
+                            <div class="swatch-container" id="qrColorContainer"><button class="swatch active"
+                                    style="--color:#172033" data-color="#172033" aria-label="Ink"></button><button
+                                    class="swatch" style="--color:#3157d5" data-color="#3157d5"
+                                    aria-label="Blue"></button><button class="swatch" style="--color:#7c3aed"
+                                    data-color="#7c3aed" aria-label="Purple"></button><button class="swatch"
+                                    style="--color:#007f67" data-color="#007f67" aria-label="Green"></button><button
+                                    class="swatch" style="--color:#c2410c" data-color="#c2410c"
+                                    aria-label="Orange"></button></div>
+                        </div>
+                        <div class="swatch-group"><label class="label">Background <input type="color" id="customBgColor"
+                                    value="#ffffff" aria-label="Custom background color"></label>
+                            <div class="swatch-container" id="bgColorContainer"><button class="swatch active"
+                                    style="--color:#ffffff" data-color="#ffffff" aria-label="White"></button><button
+                                    class="swatch" style="--color:#edf2ff" data-color="#edf2ff"
+                                    aria-label="Pale blue"></button><button class="swatch" style="--color:#fff7ed"
+                                    data-color="#fff7ed" aria-label="Pale orange"></button><button class="swatch"
+                                    style="--color:#ecfdf5" data-color="#ecfdf5"
+                                    aria-label="Pale green"></button><button class="swatch transparent-swatch"
+                                    data-color="transparent" aria-label="Transparent"></button></div>
+                        </div>
+                    </div>
+                    <p class="contrast-note" id="contrastNote" aria-live="polite"></p>
+                    <details class="advanced">
+                        <summary>More design controls <span>Colors, logo, size, corners and scan reliability</span>
+                        </summary>
+                        <div class="advanced-content">
+                            <div class="settings-grid">
+                                <div class="form-group"><label class="label">Logo</label><button class="upload-area"
+                                        id="logoDropzone" type="button">Upload logo from this device</button><input
+                                        class="file-input" type="file" id="input-logo"
+                                        accept="image/png,image/jpeg,image/svg+xml">
+                                    <div class="image-preview-wrapper" id="logoPreviewWrapper"><img id="logoPreviewImg"
+                                            class="image-preview-img" alt="Uploaded logo"><span
+                                            id="logoPreviewName">Logo</span><button class="remove-btn" type="button"
+                                            id="removeLogoBtn">Remove</button></div>
+                                </div>
+                                <div class="form-group"><label class="label" for="logoSize">Logo size</label><input
+                                        id="logoSize" type="range" min="15" max="32" value="24">
+                                    <p class="helper">Kept within scan-safe limits.</p>
+                                </div>
+                                <div class="form-group"><label class="label" for="qrSize">Download size</label><select
+                                        id="qrSize">
+                                        <option value="600">600 px</option>
+                                        <option value="1000" selected>1000 px</option>
+                                        <option value="1500">1500 px</option>
+                                        <option value="2000">2000 px</option>
+                                    </select></div>
+                                <div class="form-group"><label class="label" for="errorCorrection">Error
+                                        correction</label><select id="errorCorrection">
+                                        <option value="L">Low (7%)</option>
+                                        <option value="M">Medium (15%)</option>
+                                        <option value="Q">Quartile (25%)</option>
+                                        <option value="H" selected>High (30%)</option>
+                                    </select></div>
+                                <div class="form-group"><label class="label" for="qrMargin">Quiet zone</label><select
+                                        id="qrMargin">
+                                        <option value="0">None</option>
+                                        <option value="10" selected>Standard</option>
+                                        <option value="20">Generous</option>
+                                    </select></div>
+                                <div class="form-group"><label class="label" for="qrBranding">Text below
+                                        QR</label><input id="qrBranding" maxlength="40"
+                                        placeholder="e.g. Scan to visit"></div>
+                            </div>
+                        </div>
+                    </details>
+                    <button class="btn-primary" id="generateCustomBtn" type="button"><span>Generate Customized
+                            QR</span> →</button>
+                </div>
+                </div>
+                <p class="privacy-line">Your QR content and logo stay in your browser.</p>
+            </section>
+            <section class="history-section" id="historySection">
+                <div>
+                    <p class="eyebrow">LOCAL HISTORY</p>
+                    <h2>Saved on this device</h2>
+                    <p>Recent QR settings live only in this browser. Nothing is uploaded.</p>
+                </div><button id="clearHistoryBtn" class="text-button" type="button">Clear all</button>
+                <div class="history-list" id="historyList"></div>
+            </section>
+        </main>
+        <section id="features" class="info-section">
+            <p class="eyebrow">ALL THE ESSENTIALS</p>
+            <h2>A professional QR platform, open to everyone.</h2>
+            <div class="feature-grid">
+                <article><b>◫</b>
+                    <h3>All QR types</h3>
+                    <p>Links, Wi-Fi, contacts, social profiles, events and more.</p>
+                </article>
+                <article><b>✦</b>
+                    <h3>Fully customizable</h3>
+                    <p>Colors, logos, templates, backgrounds and branding.</p>
+                </article>
+                <article><b>⇩</b>
+                    <h3>Multiple formats</h3>
+                    <p>Download crisp PNG, SVG and PDF files.</p>
+                </article>
+                <article><b>▦</b>
+                    <h3>Batch generation</h3>
+                    <p>Turn multiple links or text values into QR codes at once.</p>
+                </article>
+            </div>
+        </section>
+        <section id="how" class="how-section">
+            <p class="eyebrow">SIMPLE BY DESIGN</p>
+            <h2>From idea to QR in three steps.</h2>
+            <ol>
+                <li><span>1</span>
+                    <div><b>Choose a QR type</b>
+                        <p>Start with exactly what you want to share.</p>
+                    </div>
+                </li>
+                <li><span>2</span>
+                    <div><b>Customize your QR</b>
+                        <p>Use free colors, templates and a logo.</p>
+                    </div>
+                </li>
+                <li><span>3</span>
+                    <div><b>Download and share</b>
+                        <p>Get a print-ready PNG, SVG or PDF.</p>
+                    </div>
+                </li>
+            </ol>
+        </section>
+        <section class="faq-section">
+            <p class="eyebrow">QUESTIONS, ANSWERED</p>
+            <h2>Good to know</h2>
+            <details>
+                <summary>Is QRMade free?</summary>
+                <p>Yes. Every feature shown in QRMade is free to use.</p>
+            </details>
+            <details>
+                <summary>Does QRMade require signup?</summary>
+                <p>No. Generate and download immediately, without an account.</p>
+            </details>
+            <details>
+                <summary>Are my QR details uploaded?</summary>
+                <p>No. QR codes are generated directly in your browser. Local history, if used, stays on this device.
+                </p>
+            </details>
+            <details>
+                <summary>Are QR codes permanent?</summary>
+                <p>Static QR codes encode their data directly, so they keep working as long as the destination does.</p>
+            </details>
+            <details>
+                <summary>Can I download SVG and PDF?</summary>
+                <p>Yes. Every QR code supports PNG, SVG, and PDF downloads.</p>
+            </details>
+        </section>
+        <footer><a class="logo" href="index.html"><span class="logo-mark">▦</span>QRMade</a>
+            <p>Everything you need to create QR codes. Completely free.</p>
+            <p>QR codes are generated directly in your browser.</p>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

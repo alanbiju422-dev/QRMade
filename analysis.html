@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>QRMade Analytics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="analysis.css">
+</head>
+<body>
+
+<!-- ============================================================
+     1. LOGIN SCREEN
+     ============================================================ -->
+<div id="login-screen">
+  <div class="dot-field" aria-hidden="true"></div>
+  <div class="scan-square" aria-hidden="true" style="top:14%; left:10%;"></div>
+  <div class="scan-square" aria-hidden="true" style="bottom:10%; right:8%; width:170px; height:170px; animation-delay:1s;"></div>
+
+  <form class="login-card" id="login-form" novalidate>
+    <div class="login-brand">
+      <svg class="finder-mark" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="1" y="1" width="9" height="9" rx="2" stroke-width="1.6"/>
+        <rect x="4" y="4" width="3" height="3" rx="0.6" fill="currentColor"/>
+        <rect x="16" y="1" width="9" height="9" rx="2" stroke-width="1.6"/>
+        <rect x="19" y="4" width="3" height="3" rx="0.6" fill="currentColor"/>
+        <rect x="1" y="16" width="9" height="9" rx="2" stroke-width="1.6"/>
+        <rect x="4" y="19" width="3" height="3" rx="0.6" fill="currentColor"/>
+        <rect x="16" y="17" width="3" height="3" rx="0.6" fill="currentColor"/>
+        <rect x="21" y="17" width="3" height="3" rx="0.6" fill="currentColor"/>
+        <rect x="16" y="22" width="3" height="3" rx="0.6" fill="currentColor"/>
+        <rect x="21" y="22" width="3" height="3" rx="0.6" fill="currentColor"/>
+      </svg>
+      <h1>QRMade Analytics</h1>
+      <p>Private Analytics Dashboard</p>
+    </div>
+
+    <div id="login-message"></div>
+
+    <div class="field">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="Enter admin username" autocomplete="username" required>
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Enter password" autocomplete="current-password" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary" id="login-btn">
+      <span id="login-btn-label">Log in</span>
+    </button>
+
+    <div class="login-foot">Access is restricted to a single administrator account.</div>
+  </form>
+</div>
+
+<!-- ============================================================
+     2. DASHBOARD
+     ============================================================ -->
+<div id="dashboard" class="hidden">
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="brand">
+        <svg class="finder-mark" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="1" y="1" width="9" height="9" rx="2" stroke-width="1.6"/>
+          <rect x="4" y="4" width="3" height="3" rx="0.6" fill="currentColor"/>
+          <rect x="16" y="1" width="9" height="9" rx="2" stroke-width="1.6"/>
+          <rect x="19" y="4" width="3" height="3" rx="0.6" fill="currentColor"/>
+          <rect x="1" y="16" width="9" height="9" rx="2" stroke-width="1.6"/>
+          <rect x="4" y="19" width="3" height="3" rx="0.6" fill="currentColor"/>
+          <rect x="16" y="17" width="3" height="3" rx="0.6" fill="currentColor"/>
+          <rect x="21" y="17" width="3" height="3" rx="0.6" fill="currentColor"/>
+          <rect x="16" y="22" width="3" height="3" rx="0.6" fill="currentColor"/>
+          <rect x="21" y="22" width="3" height="3" rx="0.6" fill="currentColor"/>
+        </svg>
+        <div>
+          <div class="brand-name">QRMade Analytics</div>
+          <div class="brand-sub">Private Analytics Dashboard</div>
+        </div>
+      </div>
+      <div class="range-pill"><span class="dot"></span> Showing <strong id="range-label">All Time</strong></div>
+    </div>
+
+    <div class="topbar-right">
+      <div class="select-wrap" id="filter-wrap">
+        <button class="select-btn" id="filter-btn" aria-haspopup="true" aria-expanded="false">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg>
+          <span id="filter-btn-label">All Time</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="menu hidden" id="filter-menu">
+          <button data-period="today">Today</button>
+          <button data-period="7d">Last 7 Days</button>
+          <button data-period="30d">Last 30 Days</button>
+          <button data-period="month">This Month</button>
+          <button data-period="year">This Year</button>
+          <button data-period="all" class="active">All Time</button>
+          <div class="divider"></div>
+          <button data-period="custom">Custom Range…</button>
+          <div class="custom-range hidden" id="custom-range-box">
+            <input type="date" id="range-start" aria-label="Start date">
+            <input type="date" id="range-end" aria-label="End date">
+            <button type="button" class="btn btn-primary" id="apply-range">Apply Range</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="theme-switch" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+        <svg id="theme-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36A5.4 5.4 0 0 1 12 3Z"/></svg>
+      </button>
+
+      <button class="btn btn-ghost" id="logout-btn">Log out</button>
+    </div>
+  </header>
+
+  <main class="dash-main">
+    <div id="banner-area"></div>
+
+    <!-- PRIMARY METRIC CARDS (4 fixed-width cards, start-aligned) -->
+    <section class="dash-section">
+      <div class="section-title">Overview <span class="tag" id="overview-tag">DailyStats</span></div>
+      <div class="stat-grid" id="stat-grid"></div>
+    </section>
+
+    <!-- QR TYPE MINI-CARDS (14 types, compact 5-col grid) -->
+    <section class="dash-section">
+      <div class="section-title">QR Types <span class="tag">by count</span></div>
+      <div class="qr-type-grid" id="qr-type-grid"></div>
+    </section>
+
+    <!-- Hidden JS hooks (ranking panel removed from layout) -->
+    <span id="qr-total-tag" class="hidden">0 total</span>
+    <div id="rank-card" class="hidden"></div>
+
+    <!-- CHARTS — 5 compact panels in one row -->
+    <section class="dash-section">
+      <div class="section-title">Trends</div>
+      <div class="chart-grid chart-grid-five">
+        <div class="card chart-card">
+          <div class="chart-head"><h3>Visitors</h3><span class="sub" id="visitors-chart-sub">—</span></div>
+          <div class="chart-body">
+            <canvas id="visitorsChart"></canvas>
+            <div class="chart-empty hidden" id="visitorsChart-empty"></div>
+          </div>
+        </div>
+        <div class="card chart-card">
+          <div class="chart-head"><h3>QR Type Distribution</h3><span class="sub" id="dist-chart-sub">—</span></div>
+          <div class="chart-body">
+            <canvas id="typeDistChart"></canvas>
+            <div class="chart-empty hidden" id="typeDistChart-empty"></div>
+          </div>
+        </div>
+        <div class="card chart-card">
+          <div class="chart-head"><h3>Page Views</h3><span class="sub" id="pv-chart-sub">—</span></div>
+          <div class="chart-body">
+            <canvas id="pageViewsChart"></canvas>
+            <div class="chart-empty hidden" id="pageViewsChart-empty"></div>
+          </div>
+        </div>
+        <div class="card chart-card">
+          <div class="chart-head"><h3>QR Generation</h3><span class="sub" id="qrgen-chart-sub">—</span></div>
+          <div class="chart-body">
+            <canvas id="qrGenChart"></canvas>
+            <div class="chart-empty hidden" id="qrGenChart-empty"></div>
+          </div>
+        </div>
+        <div class="card chart-card">
+          <div class="chart-head"><h3>Downloads</h3><span class="sub">PNG / SVG / PDF</span></div>
+          <div class="chart-body">
+            <canvas id="downloadsChart"></canvas>
+            <div class="chart-empty hidden" id="downloadsChart-empty"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DOWNLOAD ANALYTICS (PNG / SVG / PDF) -->
+    <section class="dash-section">
+      <div class="section-title">Downloads</div>
+      <div class="dl-grid" id="dl-grid"></div>
+    </section>
+
+  </main>
+
+  <footer class="foot-note">QRMade Analytics · connected via Google Apps Script</footer>
+</div>
+
+<!-- Session expired modal -->
+<div class="modal-overlay hidden" id="session-modal">
+  <div class="modal">
+    <div class="icon-wrap">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg>
+    </div>
+    <h3>Session expired</h3>
+    <p>Your session has ended for security reasons. Please log in again to continue viewing analytics.</p>
+    <button class="btn btn-primary" id="session-modal-btn" style="width:100%;">Return to login</button>
+  </div>
+</div>
+
+<!-- Full-page loading overlay (post-login analytics fetch) -->
+<div class="dash-loading hidden" id="dash-loading">
+  <div class="matrix-loader" aria-hidden="true">
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span>
+  </div>
+  <p id="dash-loading-text">Loading analytics…</p>
+</div>
+
+<script src="analysis.js" defer></script>
+</body>
+</html>

@@ -1,10 +1,12 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://your-domain.example/</loc>
-  </url>
-  <url>
-    <loc>https://your-domain.example/generate.html</loc>
-  </url>
+    <url>
+        <loc>https://qrmade.vercel.app/</loc>
+    </url>
+    <url>
+        <loc>https://qrmade.vercel.app/generate.html</loc>
+    </url>
+    <url>
+        <loc>https://qrmade.vercel.app/analysis.html</loc>
+    </url>
 </urlset>
-

@@ -26,6 +26,23 @@
     padding: 0;
 }
 
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+img,
+video,
+canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+svg {
+    max-width: 100%;
+}
+
 *:focus-visible {
     outline: 2px solid var(--primary);
     outline-offset: 2px;
@@ -51,6 +68,7 @@ body {
     display: flex;
     flex-direction: column;
     -webkit-font-smoothing: antialiased;
+    overflow-wrap: break-word;
 }
 
 /* Layout */
@@ -1389,7 +1407,7 @@ body {
 }
 
 .result-main h1 {
-    font-size: 48px;
+    font-size: clamp(32px, 8vw, 48px);
 }
 
 .result-subtitle {

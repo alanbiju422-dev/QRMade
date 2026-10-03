@@ -52,11 +52,18 @@ html[data-theme="light"]{
   --shadow:0 20px 40px -24px rgba(20,25,35,.22);
 }
 *{box-sizing:border-box; margin:0; padding:0;}
+html, body{
+  max-width: 100%;
+  overflow-x: hidden;
+}
 body{
   background:var(--bg); color:var(--text); font-family:var(--font-body);
   min-height:100vh; -webkit-font-smoothing:antialiased;
   transition:background .25s var(--ease), color .25s var(--ease);
+  overflow-wrap: anywhere;
 }
+img, video, canvas{max-width:100%; height:auto;}
+svg{max-width:100%;}
 button{font-family:inherit; cursor:pointer;}
 input{font-family:inherit;}
 ::selection{background:var(--accent); color:#04140F;}

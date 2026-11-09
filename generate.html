@@ -5,7 +5,7 @@
     <meta name="robots" content="noindex, nofollow">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>QRMade — Your QR is Ready</title>
+    <title>QRMade | QR ready</title>
     <meta name="description" content="Download your free QR code as PNG, SVG or PDF. No signup required.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,21 +17,21 @@
 
 <body>
     <div class="container result-container">
-        <nav class="site-nav"><a href="index.html" class="logo"><span class="logo-mark">▦</span>QRMade</a><a class="back-btn" href="index.html">← Back to editor</a></nav>
+        <nav class="site-nav" aria-label="Result navigation"><a href="index.html" class="logo"><span class="logo-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3z"/><path d="M14 14h3v3h-3zM19 14h2v2h-2zM14 19h2v2h-2zM19 19h2v2h-2z"/></svg></span><span>QRMade</span></a><a class="back-btn" href="index.html">Back to editor</a></nav>
         <main class="result-main">
-            <p class="eyebrow">YOUR QR IS READY</p>
-            <h1 id="status">Preparing your QR…</h1>
-            <p class="result-subtitle">Your <span id="resultType">QR</span> code is generated locally and ready to share.</p>
+            <p class="eyebrow">QR ready</p>
+            <h1 id="status" aria-live="polite" aria-atomic="true">Preparing your QR</h1>
+            <p class="result-subtitle" id="resultSubtitle">Your <span id="resultType">QR</span> code is generated locally and ready to share.</p>
             <section id="singleResult" class="result-card">
                 <div class="preview-box">
-                    <div id="qrContainer"></div>
+                    <div id="qrContainer" role="img" aria-label="QR code preview. The encoded content is shown in QR information."></div>
                     <p id="caption" class="qr-caption"></p>
                 </div>
                 <div class="result-info">
                     <h2>QR information</h2>
                     <p id="resultData"></p>
                 </div>
-                <div class="download-group"><button class="btn-download primary" id="downloadPNG" type="button">Download PNG</button><button class="btn-download" id="downloadSVG" type="button">Download SVG</button><button class="btn-download" id="downloadPDF" type="button">Download PDF</button></div>
+                <div class="download-group"><button class="btn-download primary" id="downloadPNG" type="button">Download PNG</button><button class="btn-download" id="downloadSVG" type="button">Download SVG</button><button class="btn-download" id="downloadPDF" type="button">Download PDF</button><button class="btn-download" id="shareQR" type="button">Share QR</button></div>
             </section>
             <section id="batchResult" class="hidden">
                 <div class="batch-header">
@@ -45,7 +45,7 @@
             <p class="privacy-line">Generated in your browser. Nothing was uploaded.</p>
         </main>
         <footer>
-            <p>Everything you need to create QR codes. Completely free.</p>
+            <p>Create, customize and download your QR code.</p>
         </footer>
     </div>
     <div id="toast" class="toast" role="status" aria-live="polite"></div>

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
 <meta name="robots" content="noindex, nofollow">
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QRMade Analytics</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <link rel="stylesheet" href="analysis.css">
 </head>
@@ -17,10 +17,6 @@
      1. LOGIN SCREEN
      ============================================================ -->
 <div id="login-screen">
-  <div class="dot-field" aria-hidden="true"></div>
-  <div class="scan-square" aria-hidden="true" style="top:14%; left:10%;"></div>
-  <div class="scan-square" aria-hidden="true" style="bottom:10%; right:8%; width:170px; height:170px; animation-delay:1s;"></div>
-
   <form class="login-card" id="login-form" novalidate>
     <div class="login-brand">
       <svg class="finder-mark" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -39,7 +35,7 @@
       <p>Private Analytics Dashboard</p>
     </div>
 
-    <div id="login-message"></div>
+    <div id="login-message" role="status" aria-live="polite"></div>
 
     <div class="field">
       <label for="username">Username</label>
@@ -83,25 +79,25 @@
           <div class="brand-sub">Private Analytics Dashboard</div>
         </div>
       </div>
-      <div class="range-pill"><span class="dot"></span> Showing <strong id="range-label">All Time</strong></div>
+      <div class="range-pill"><span class="dot"></span> Showing <strong id="range-label">All time</strong></div>
     </div>
 
     <div class="topbar-right">
       <div class="select-wrap" id="filter-wrap">
-        <button class="select-btn" id="filter-btn" aria-haspopup="true" aria-expanded="false">
+        <button class="select-btn" id="filter-btn" aria-haspopup="true" aria-expanded="false" aria-controls="filter-menu">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg>
-          <span id="filter-btn-label">All Time</span>
+          <span id="filter-btn-label">All time</span>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
         </button>
         <div class="menu hidden" id="filter-menu">
           <button data-period="today">Today</button>
-          <button data-period="7d">Last 7 Days</button>
-          <button data-period="30d">Last 30 Days</button>
-          <button data-period="month">This Month</button>
-          <button data-period="year">This Year</button>
-          <button data-period="all" class="active">All Time</button>
+          <button data-period="7d">Last 7 days</button>
+          <button data-period="30d">Last 30 days</button>
+          <button data-period="month">This month</button>
+          <button data-period="year">This year</button>
+          <button data-period="all" class="active" aria-pressed="true">All time</button>
           <div class="divider"></div>
-          <button data-period="custom">Custom Range…</button>
+          <button data-period="custom" aria-expanded="false" aria-controls="custom-range-box">Custom Range…</button>
           <div class="custom-range hidden" id="custom-range-box">
             <input type="date" id="range-start" aria-label="Start date">
             <input type="date" id="range-end" aria-label="End date">
@@ -110,8 +106,8 @@
         </div>
       </div>
 
-      <button class="theme-switch" id="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
-        <svg id="theme-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36A5.4 5.4 0 0 1 12 3Z"/></svg>
+      <button class="theme-switch" id="theme-toggle" aria-label="Toggle color theme" title="Toggle color theme">
+        <svg id="theme-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36A5.4 5.4 0 0 1 12 3Z"/></svg>
       </button>
 
       <button class="btn btn-ghost" id="logout-btn">Log out</button>
@@ -119,17 +115,18 @@
   </header>
 
   <main class="dash-main">
-    <div id="banner-area"></div>
+    <h1 class="sr-only">QRMade analytics dashboard</h1>
+    <div id="banner-area" role="status" aria-live="polite"></div>
 
     <!-- PRIMARY METRIC CARDS (4 fixed-width cards, start-aligned) -->
     <section class="dash-section">
-      <div class="section-title">Overview <span class="tag" id="overview-tag">DailyStats</span></div>
+      <h2 class="section-title">Overview</h2>
       <div class="stat-grid" id="stat-grid"></div>
     </section>
 
     <!-- QR TYPE MINI-CARDS (14 types, compact 5-col grid) -->
     <section class="dash-section">
-      <div class="section-title">QR Types <span class="tag">by count</span></div>
+      <h2 class="section-title">QR Types <span class="tag">by count</span></h2>
       <div class="qr-type-grid" id="qr-type-grid"></div>
     </section>
 
@@ -139,40 +136,45 @@
 
     <!-- CHARTS — 5 compact panels in one row -->
     <section class="dash-section">
-      <div class="section-title">Trends</div>
+      <h2 class="section-title">Trends</h2>
       <div class="chart-grid chart-grid-five">
         <div class="card chart-card">
           <div class="chart-head"><h3>Visitors</h3><span class="sub" id="visitors-chart-sub">—</span></div>
           <div class="chart-body">
-            <canvas id="visitorsChart"></canvas>
+            <canvas id="visitorsChart" role="img" aria-label="Visitors over time" aria-describedby="visitorsChart-description"></canvas>
+            <p class="sr-only" id="visitorsChart-description">Line chart of daily visitors for the selected date range.</p>
             <div class="chart-empty hidden" id="visitorsChart-empty"></div>
           </div>
         </div>
         <div class="card chart-card">
           <div class="chart-head"><h3>QR Type Distribution</h3><span class="sub" id="dist-chart-sub">—</span></div>
           <div class="chart-body">
-            <canvas id="typeDistChart"></canvas>
+            <canvas id="typeDistChart" role="img" aria-label="QR code types by count" aria-describedby="typeDistChart-description"></canvas>
+            <p class="sr-only" id="typeDistChart-description">Doughnut chart comparing counts across all supported QR code types.</p>
             <div class="chart-empty hidden" id="typeDistChart-empty"></div>
           </div>
         </div>
         <div class="card chart-card">
           <div class="chart-head"><h3>Page Views</h3><span class="sub" id="pv-chart-sub">—</span></div>
           <div class="chart-body">
-            <canvas id="pageViewsChart"></canvas>
+            <canvas id="pageViewsChart" role="img" aria-label="Page views over time" aria-describedby="pageViewsChart-description"></canvas>
+            <p class="sr-only" id="pageViewsChart-description">Line chart of daily page views for the selected date range.</p>
             <div class="chart-empty hidden" id="pageViewsChart-empty"></div>
           </div>
         </div>
         <div class="card chart-card">
           <div class="chart-head"><h3>QR Generation</h3><span class="sub" id="qrgen-chart-sub">—</span></div>
           <div class="chart-body">
-            <canvas id="qrGenChart"></canvas>
+            <canvas id="qrGenChart" role="img" aria-label="QR codes generated over time" aria-describedby="qrGenChart-description"></canvas>
+            <p class="sr-only" id="qrGenChart-description">Bar chart of daily QR code generations for the selected date range.</p>
             <div class="chart-empty hidden" id="qrGenChart-empty"></div>
           </div>
         </div>
         <div class="card chart-card">
           <div class="chart-head"><h3>Downloads</h3><span class="sub">PNG / SVG / PDF</span></div>
           <div class="chart-body">
-            <canvas id="downloadsChart"></canvas>
+            <canvas id="downloadsChart" role="img" aria-label="Downloads by file format" aria-describedby="downloadsChart-description"></canvas>
+            <p class="sr-only" id="downloadsChart-description">Bar chart comparing PNG, SVG, and PDF download counts.</p>
             <div class="chart-empty hidden" id="downloadsChart-empty"></div>
           </div>
         </div>
@@ -181,7 +183,7 @@
 
     <!-- DOWNLOAD ANALYTICS (PNG / SVG / PDF) -->
     <section class="dash-section">
-      <div class="section-title">Downloads</div>
+      <h2 class="section-title">Downloads</h2>
       <div class="dl-grid" id="dl-grid"></div>
     </section>
 
@@ -191,19 +193,19 @@
 </div>
 
 <!-- Session expired modal -->
-<div class="modal-overlay hidden" id="session-modal">
-  <div class="modal">
+  <div class="modal-overlay hidden" id="session-modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="session-modal-title" aria-describedby="session-modal-copy" tabindex="-1">
     <div class="icon-wrap">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg>
     </div>
-    <h3>Session expired</h3>
-    <p>Your session has ended for security reasons. Please log in again to continue viewing analytics.</p>
+    <h3 id="session-modal-title">Session expired</h3>
+    <p id="session-modal-copy">Your session has ended for security reasons. Please log in again to continue viewing analytics.</p>
     <button class="btn btn-primary" id="session-modal-btn" style="width:100%;">Return to login</button>
   </div>
 </div>
 
 <!-- Full-page loading overlay (post-login analytics fetch) -->
-<div class="dash-loading hidden" id="dash-loading">
+<div class="dash-loading hidden" id="dash-loading" role="status" aria-live="polite">
   <div class="matrix-loader" aria-hidden="true">
     <span></span><span></span><span></span><span></span>
     <span></span><span></span><span></span><span></span>

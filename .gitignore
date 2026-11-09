@@ -1,1 +1,4 @@
 Code.gs
+# AI coding agent skills
+.agents/
+skills-lock.json

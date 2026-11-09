@@ -70,6 +70,8 @@
      ============================================================ */
   function applyTheme(theme) {
     document.documentElement.setAttribute("data-theme", theme);
+    $("#theme-toggle").setAttribute("aria-label", theme === "dark" ? "Switch to light theme" : "Switch to dark theme");
+    $("#theme-toggle").setAttribute("title", theme === "dark" ? "Switch to light theme" : "Switch to dark theme");
     const icon = $("#theme-icon");
     icon.innerHTML = theme === "dark"
       ? '<path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36A5.4 5.4 0 0 1 12 3Z"/>'
@@ -79,7 +81,7 @@
   (function initTheme() {
     let saved = null;
     try { saved = localStorage.getItem("qrmade_theme"); } catch (e) { }
-    const preferred = saved || (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+    const preferred = saved || "light";
     applyTheme(preferred);
   })();
   $("#theme-toggle").addEventListener("click", () => {
@@ -187,6 +189,7 @@
     setLoginMessage(null);
     dashboard.classList.add("hidden");
     loginScreen.classList.remove("hidden");
+    $("#username").focus();
   }
   $("#logout-btn").addEventListener("click", logout);
   $("#session-modal-btn").addEventListener("click", () => {
@@ -196,7 +199,14 @@
 
   function showSessionExpired() {
     sessionModal.classList.remove("hidden");
+    $("#session-modal-btn").focus();
   }
+  sessionModal.addEventListener("keydown", (event) => {
+    if (event.key === "Tab") {
+      event.preventDefault();
+      $("#session-modal-btn").focus();
+    }
+  });
 
   /* ============================================================
      ANALYTICS FETCH
@@ -312,6 +322,9 @@
   const filterBtnLabel = $("#filter-btn-label");
   const rangeLabel = $("#range-label");
   const customBox = $("#custom-range-box");
+  $$("#filter-menu button[data-period]").forEach(button => {
+    if (!button.hasAttribute("aria-pressed")) button.setAttribute("aria-pressed", String(button.classList.contains("active")));
+  });
 
   filterBtn.addEventListener("click", () => {
     const open = !filterMenu.classList.contains("hidden");
@@ -322,17 +335,26 @@
     if (!$("#filter-wrap").contains(e.target)) {
       filterMenu.classList.add("hidden");
       filterBtn.setAttribute("aria-expanded", "false");
+      customBox.classList.add("hidden");
+      $('#filter-menu button[data-period="custom"]').setAttribute("aria-expanded", "false");
     }
   });
   $$("#filter-menu button[data-period]").forEach(btn => {
     btn.addEventListener("click", () => {
       const period = btn.dataset.period;
       if (period === "custom") {
-        customBox.classList.toggle("hidden");
+        const open = customBox.classList.contains("hidden");
+        customBox.classList.toggle("hidden", !open);
+        btn.setAttribute("aria-expanded", String(open));
         return;
       }
-      $$("#filter-menu button[data-period]").forEach(b => b.classList.remove("active"));
+      $$("#filter-menu button[data-period]").forEach(b => {
+        b.classList.remove("active");
+        b.setAttribute("aria-pressed", "false");
+        if (b.dataset.period === "custom") b.setAttribute("aria-expanded", "false");
+      });
       btn.classList.add("active");
+      btn.setAttribute("aria-pressed", "true");
       customBox.classList.add("hidden");
       filterMenu.classList.add("hidden");
       applyPeriod(period);
@@ -347,14 +369,21 @@
     }
     state.customStart = start;
     state.customEnd = end;
-    $$("#filter-menu button[data-period]").forEach(b => b.classList.remove("active"));
+    $$("#filter-menu button[data-period]").forEach(b => {
+      b.classList.remove("active");
+      b.setAttribute("aria-pressed", "false");
+      if (b.dataset.period === "custom") b.setAttribute("aria-expanded", "false");
+    });
+    const customPeriodButton = $('#filter-menu button[data-period="custom"]');
+    customPeriodButton.classList.add("active");
+    customPeriodButton.setAttribute("aria-pressed", "true");
     filterMenu.classList.add("hidden");
     applyPeriod("custom");
   });
 
   const PERIOD_LABELS = {
-    today: "Today", "7d": "Last 7 Days", "30d": "Last 30 Days",
-    month: "This Month", year: "This Year", all: "All Time", custom: "Custom Range"
+    today: "Today", "7d": "Last 7 days", "30d": "Last 30 days",
+    month: "This month", year: "This year", all: "All time", custom: "Custom range"
   };
 
   function applyPeriod(period) {
@@ -438,9 +467,9 @@
 
   /* Symbol glyphs for the 14 QR-type mini-cards */
   const QR_TYPE_ICONS = {
-    URL: '↗', Text: 'T', WiFi: '⌁', vCard: '♙', Email: '@',
-    Phone: '☎', SMS: '✉', WhatsApp: '◉', Location: '⌖',
-    SocialMedia: '◎', Event: '◷', YouTube: '▶', Instagram: '◌', AppLinks: '▣'
+    URL: 'URL', Text: 'T', WiFi: 'Wi', vCard: 'ID', Email: '@',
+    Phone: 'TEL', SMS: 'SMS', WhatsApp: 'WA', Location: 'LOC',
+    SocialMedia: 'SOC', Event: 'EVT', YouTube: 'YT', Instagram: 'IG', AppLinks: 'APP'
   };
 
   function buildEmptyStatCards() {
@@ -471,7 +500,7 @@
     if (!grid) return;
     grid.innerHTML = QR_TYPES.map(t => `
     <div class="card metric-box qr-type-card">
-      <div class="qrt-icon">${QR_TYPE_ICONS[t.key] || '▦'}</div>
+      <div class="qrt-icon" aria-hidden="true">${QR_TYPE_ICONS[t.key] || '▦'}</div>
       <div class="qrt-val skel" style="width:34px; height:15px;">&nbsp;</div>
       <div class="qrt-lbl">${t.label}</div>
     </div>`).join("");
@@ -483,7 +512,7 @@
     <div class="card metric-box stat-card">
       <div class="stat-top">
         <div class="stat-icon">${ICONS[d.icon]}</div>
-        <span class="trend flat">${state.period === "all" ? "ALL" : PERIOD_LABELS[state.period].toUpperCase()}</span>
+        <span class="trend flat">${state.period === "all" ? "All time" : PERIOD_LABELS[state.period]}</span>
       </div>
       <div class="stat-value">${totals[d.key].toLocaleString()}</div>
       <div class="stat-label">${d.label}</div>
@@ -506,7 +535,7 @@
     if (!grid) return;
     grid.innerHTML = QR_TYPES.map(t => `
     <div class="card metric-box qr-type-card">
-      <div class="qrt-icon">${QR_TYPE_ICONS[t.key] || '▦'}</div>
+      <div class="qrt-icon" aria-hidden="true">${QR_TYPE_ICONS[t.key] || '▦'}</div>
       <div class="qrt-val">${totals[t.key].toLocaleString()}</div>
       <div class="qrt-lbl">${t.label}</div>
     </div>`).join("");
@@ -524,8 +553,20 @@
   }
 
   function palette(i) {
-    const colors = ["#00E39B", "#5B8CFF", "#FFA53D", "#FF5470", "#B78BFF", "#3FD6E0", "#F2C94C", "#6FCF97", "#F27FA8", "#8AB6FF", "#E0A458", "#61D9C4", "#C77DFF", "#9AE66E"];
+    const styles = getComputedStyle(document.documentElement);
+    const colors = [
+      styles.getPropertyValue("--accent").trim(),
+      styles.getPropertyValue("--text-muted").trim(),
+      styles.getPropertyValue("--border-strong").trim(),
+      styles.getPropertyValue("--text-faint").trim(),
+      styles.getPropertyValue("--surface-2").trim()
+    ];
     return colors[i % colors.length];
+  }
+
+  function setChartDescription(id, text) {
+    const description = $(`#${id}-description`);
+    if (description) description.textContent = text;
   }
 
   /* ============================================================
@@ -536,7 +577,7 @@
     return {
       grid: styles.getPropertyValue("--border").trim(),
       text: styles.getPropertyValue("--text-muted").trim(),
-      font: "'Inter', sans-serif"
+      font: "'DM Sans', sans-serif"
     };
   }
   function baseOptions(extra = {}) {
@@ -551,8 +592,8 @@
         }
       },
       scales: {
-        x: { grid: { color: "transparent" }, ticks: { color: t.text, font: { size: 8 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 4 } },
-        y: { grid: { color: t.grid }, ticks: { color: t.text, font: { size: 8 }, maxTicksLimit: 4 }, beginAtZero: true }
+        x: { grid: { color: "transparent" }, ticks: { color: t.text, font: { size: 11 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 5 } },
+        y: { grid: { color: t.grid }, ticks: { color: t.text, font: { size: 11 }, maxTicksLimit: 5 }, beginAtZero: true }
       }
     }, extra);
   }
@@ -566,13 +607,23 @@
     const t = chartTheme();
     const labels = rows.map(r => r.Date);
     const hasData = rows.length > 0;
+    const totalFor = key => rows.reduce((sum, row) => sum + (Number(row[key]) || 0), 0);
+    setChartDescription("visitorsChart", hasData
+      ? `Daily visitors for ${rows.length} days. ${totalFor("Visitors").toLocaleString()} visitors total.`
+      : "No visitor data is available for this date range.");
+    setChartDescription("pageViewsChart", hasData
+      ? `Daily page views for ${rows.length} days. ${totalFor("PageViews").toLocaleString()} page views total.`
+      : "No page view data is available for this date range.");
+    setChartDescription("qrGenChart", hasData
+      ? `Daily QR code generations for ${rows.length} days. ${totalFor("QRGenerated").toLocaleString()} QR codes generated.`
+      : "No QR generation data is available for this date range.");
 
     destroyChart("visitorsChart");
     $("#visitors-chart-sub").textContent = hasData ? `${rows.length} day${rows.length > 1 ? "s" : ""}` : "—";
     if (hasData) {
       state.charts.visitorsChart = new Chart($("#visitorsChart"), {
         type: "line",
-        data: { labels, datasets: [{ data: rows.map(r => r.Visitors), borderColor: "#00E39B", backgroundColor: "rgba(0,227,155,.12)", fill: true, tension: .35, pointRadius: 0, borderWidth: 2 }] },
+        data: { labels, datasets: [{ data: rows.map(r => r.Visitors), borderColor: palette(0), backgroundColor: "rgba(37,69,184,.08)", fill: true, tension: .25, pointRadius: 0, borderWidth: 2 }] },
         options: baseOptions()
       });
       toggleChartEmpty("visitorsChart-empty", false);
@@ -583,7 +634,7 @@
     if (hasData) {
       state.charts.pageViewsChart = new Chart($("#pageViewsChart"), {
         type: "line",
-        data: { labels, datasets: [{ data: rows.map(r => r.PageViews), borderColor: "#5B8CFF", backgroundColor: "rgba(91,140,255,.12)", fill: true, tension: .35, pointRadius: 0, borderWidth: 2 }] },
+        data: { labels, datasets: [{ data: rows.map(r => r.PageViews), borderColor: palette(1), backgroundColor: "rgba(112,113,107,.08)", fill: true, tension: .25, pointRadius: 0, borderWidth: 2 }] },
         options: baseOptions()
       });
       toggleChartEmpty("pageViewsChart-empty", false);
@@ -594,7 +645,7 @@
     if (hasData) {
       state.charts.qrGenChart = new Chart($("#qrGenChart"), {
         type: "bar",
-        data: { labels, datasets: [{ data: rows.map(r => r.QRGenerated), backgroundColor: "#FFA53D", borderRadius: 3, maxBarThickness: 12 }] },
+        data: { labels, datasets: [{ data: rows.map(r => r.QRGenerated), backgroundColor: palette(0), borderRadius: 2, maxBarThickness: 16 }] },
         options: baseOptions()
       });
       toggleChartEmpty("qrGenChart-empty", false);
@@ -604,11 +655,16 @@
     destroyChart("typeDistChart");
     const distValues = QR_TYPES.map(qt => totals[qt.key]);
     const distHasData = distValues.some(v => v > 0);
+    const topIndex = distValues.indexOf(Math.max(...distValues));
+    const topType = QR_TYPES[topIndex];
+    setChartDescription("typeDistChart", distHasData
+      ? `QR type distribution. ${topType.label} is most used with ${distValues[topIndex].toLocaleString()} QR codes.`
+      : "No QR type data is available for this date range.");
     $("#dist-chart-sub").textContent = distHasData ? `${QR_TYPES.length} types` : "—";
     if (distHasData) {
       state.charts.typeDistChart = new Chart($("#typeDistChart"), {
         type: "doughnut",
-        data: { labels: QR_TYPES.map(q => q.label), datasets: [{ data: distValues, backgroundColor: QR_TYPES.map((_, i) => palette(i)), borderWidth: 0 }] },
+        data: { labels: QR_TYPES.map(q => q.label), datasets: [{ data: distValues, backgroundColor: QR_TYPES.map((_, i) => palette(i)), borderColor: getComputedStyle(document.documentElement).getPropertyValue("--surface").trim(), borderWidth: 2 }] },
         options: {
           responsive: true, maintainAspectRatio: false, cutout: "55%",
           plugins: {
@@ -623,10 +679,11 @@
     destroyChart("downloadsChart");
     const dlValues = [totals.PNGDownloads, totals.SVGDownloads, totals.PDFDownloads];
     const dlHasData = dlValues.some(v => v > 0);
+    setChartDescription("downloadsChart", `Downloads by format: PNG ${dlValues[0].toLocaleString()}, SVG ${dlValues[1].toLocaleString()}, PDF ${dlValues[2].toLocaleString()}.`);
     if (dlHasData) {
       state.charts.downloadsChart = new Chart($("#downloadsChart"), {
         type: "bar",
-        data: { labels: ["PNG", "SVG", "PDF"], datasets: [{ data: dlValues, backgroundColor: ["#5B8CFF", "#00E39B", "#FF5470"], borderRadius: 4, maxBarThickness: 18 }] },
+        data: { labels: ["PNG", "SVG", "PDF"], datasets: [{ data: dlValues, backgroundColor: [palette(0), palette(2), palette(3)], borderRadius: 2, maxBarThickness: 24 }] },
         options: baseOptions({ scales: { x: { grid: { color: "transparent" }, ticks: { color: t.text } }, y: { grid: { color: t.grid }, ticks: { color: t.text }, beginAtZero: true } } })
       });
       toggleChartEmpty("downloadsChart-empty", false);

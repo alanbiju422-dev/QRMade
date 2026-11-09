@@ -72,20 +72,20 @@ function qpTrackDownload(kind, name) {
 document.addEventListener('DOMContentLoaded', qpTrackPageview);
 
 const qpTypes = [
-    ['url', '↗', 'URL / Link', 'Create a QR code for any website or link.', 'link website url'],
+    ['url', '&#8599;', 'URL / Link', 'Create a QR code for any website or link.', 'link website url'],
     ['text', 'T', 'Text', 'Share a note, message or multiple values.', 'message note batch'],
-    ['wifi', '⌁', 'Wi-Fi', 'Share Wi-Fi access instantly.', 'wifi network'],
-    ['vcard', '♙', 'vCard', 'Share contact information.', 'contact card person'],
+    ['wifi', 'Wi', 'Wi-Fi', 'Share Wi-Fi access instantly.', 'wifi network'],
+    ['vcard', 'ID', 'vCard', 'Share contact information.', 'contact card person'],
     ['email', '@', 'Email', 'Open a pre-filled email message.', 'mail'],
-    ['phone', '☎', 'Phone', 'Start a call with one scan.', 'call'],
-    ['sms', '✉', 'SMS', 'Start a text message.', 'message text'],
-    ['whatsapp', '◉', 'WhatsApp', 'Start a WhatsApp chat.', 'chat'],
-    ['map', '⌖', 'Location / Map', 'Share a place or map location.', 'location maps address'],
-    ['social', '◎', 'Social media', 'Link to a social profile.', 'social profile'],
-    ['event', '◷', 'Event', 'Share an event with calendar details.', 'calendar meeting'],
-    ['youtube', '▶', 'YouTube', 'Link straight to a video or channel.', 'video'],
-    ['instagram', '◌', 'Instagram', 'Link to an Instagram profile.', 'social insta'],
-    ['app', '▣', 'App links', 'Send people to an app store listing.', 'google play app store']
+    ['phone', 'TEL', 'Phone', 'Start a call with one scan.', 'call'],
+    ['sms', 'SMS', 'SMS', 'Start a text message.', 'message text'],
+    ['whatsapp', 'WA', 'WhatsApp', 'Start a WhatsApp chat.', 'chat'],
+    ['map', 'LOC', 'Location / Map', 'Share a place or map location.', 'location maps address'],
+    ['social', 'SOC', 'Social media', 'Link to a social profile.', 'social profile'],
+    ['event', 'EVT', 'Event', 'Share an event with calendar details.', 'calendar meeting'],
+    ['youtube', 'YT', 'YouTube', 'Link straight to a video or channel.', 'video'],
+    ['instagram', 'IG', 'Instagram', 'Link to an Instagram profile.', 'social insta'],
+    ['app', 'APP', 'App links', 'Send people to an app store listing.', 'google play app store']
 ];
 const templates = {
     classic: {
@@ -132,18 +132,18 @@ const templates = {
 const formFields = {
     url: '<label class="label" for="q-url">Website link</label><textarea id="q-url" placeholder="https://example.com"></textarea><p class="helper">Enter one link per line to generate a batch.</p>',
     text: '<label class="label" for="q-text">Text to encode</label><textarea id="q-text" placeholder="Write a message..."></textarea><p class="helper">Enter one value per line to generate a batch.</p>',
-    wifi: '<div class="input-grid"><div><label class="label">Network name (SSID)</label><input id="q-ssid" placeholder="Home_WiFi"></div><div><label class="label">Password</label><input id="q-pass" type="password" placeholder="Password"></div></div><label class="label">Security type</label><select id="q-security"><option value="WPA">WPA / WPA2</option><option value="WEP">WEP</option><option value="nopass">No password</option></select>',
-    vcard: '<div class="input-grid"><div><label class="label">Full name</label><input id="q-name" placeholder="Alex Morgan"></div><div><label class="label">Phone</label><input id="q-phone" placeholder="+1 555 0100"></div><div><label class="label">Email</label><input id="q-email" type="email" placeholder="alex@example.com"></div><div><label class="label">Company</label><input id="q-company" placeholder="QRMade"></div></div><label class="label">Website</label><input id="q-site" placeholder="https://example.com">',
-    email: '<label class="label">Email address</label><input id="q-email" type="email" placeholder="hello@example.com"><div class="input-grid"><div><label class="label">Subject</label><input id="q-subject" placeholder="Hello"></div><div><label class="label">Message</label><input id="q-body" placeholder="Your message"></div></div>',
-    phone: '<label class="label">Phone number</label><input id="q-phone" type="tel" placeholder="+1 555 0100">',
-    sms: '<div class="input-grid"><div><label class="label">Phone number</label><input id="q-phone" placeholder="+1 555 0100"></div><div><label class="label">Message</label><input id="q-body" placeholder="Hello!"></div></div>',
-    whatsapp: '<div class="input-grid"><div><label class="label">WhatsApp number</label><input id="q-phone" placeholder="15550100"></div><div><label class="label">Pre-filled message</label><input id="q-body" placeholder="Hello!"></div></div>',
-    map: '<label class="label">Place, address, or map URL</label><input id="q-map" placeholder="Eiffel Tower, Paris">',
-    social: '<label class="label">Profile URL</label><input id="q-social" placeholder="https://social.example/your-name">',
-    event: '<div class="input-grid"><div><label class="label">Event title</label><input id="q-event" placeholder="Team meetup"></div><div><label class="label">Location</label><input id="q-location" placeholder="Main hall"></div><div><label class="label">Starts</label><input id="q-start" type="datetime-local"></div><div><label class="label">Ends</label><input id="q-end" type="datetime-local"></div></div><label class="label">Description</label><input id="q-desc" placeholder="Optional details">',
-    youtube: '<label class="label">YouTube video or channel URL</label><input id="q-youtube" placeholder="https://youtube.com/...">',
-    instagram: '<label class="label">Instagram profile URL or handle</label><input id="q-instagram" placeholder="https://instagram.com/yourname">',
-    app: '<label class="label">App Store or Google Play URL</label><input id="q-app" placeholder="https://play.google.com/...">'
+    wifi: '<div class="input-grid"><div><label class="label" for="q-ssid">Network name (SSID)</label><input id="q-ssid" autocomplete="off" placeholder="Home_WiFi"></div><div><label class="label" for="q-pass">Password</label><input id="q-pass" type="password" autocomplete="new-password" placeholder="Password"></div></div><label class="label" for="q-security">Security type</label><select id="q-security"><option value="WPA">WPA / WPA2</option><option value="WEP">WEP</option><option value="nopass">No password</option></select>',
+    vcard: '<div class="input-grid"><div><label class="label" for="q-name">Full name</label><input id="q-name" autocomplete="name" placeholder="Alex Morgan"></div><div><label class="label" for="q-phone">Phone</label><input id="q-phone" type="tel" autocomplete="tel" placeholder="+1 555 0100"></div><div><label class="label" for="q-email">Email</label><input id="q-email" type="email" autocomplete="email" placeholder="alex@example.com"></div><div><label class="label" for="q-company">Company</label><input id="q-company" autocomplete="organization" placeholder="Company name"></div></div><label class="label" for="q-site">Website</label><input id="q-site" type="url" placeholder="https://example.com">',
+    email: '<label class="label" for="q-email">Email address</label><input id="q-email" type="email" autocomplete="email" placeholder="hello@example.com"><div class="input-grid"><div><label class="label" for="q-subject">Subject</label><input id="q-subject" placeholder="Hello"></div><div><label class="label" for="q-body">Message</label><input id="q-body" placeholder="Your message"></div></div>',
+    phone: '<label class="label" for="q-phone">Phone number</label><input id="q-phone" type="tel" autocomplete="tel" placeholder="+1 555 0100">',
+    sms: '<div class="input-grid"><div><label class="label" for="q-phone">Phone number</label><input id="q-phone" type="tel" autocomplete="tel" placeholder="+1 555 0100"></div><div><label class="label" for="q-body">Message</label><input id="q-body" placeholder="Hello"></div></div>',
+    whatsapp: '<div class="input-grid"><div><label class="label" for="q-phone">WhatsApp number</label><input id="q-phone" type="tel" autocomplete="tel" placeholder="15550100"></div><div><label class="label" for="q-body">Pre-filled message</label><input id="q-body" placeholder="Hello"></div></div>',
+    map: '<label class="label" for="q-map">Place, address, or map URL</label><input id="q-map" placeholder="Eiffel Tower, Paris">',
+    social: '<label class="label" for="q-social">Profile URL</label><input id="q-social" type="url" placeholder="https://social.example/your-name">',
+    event: '<div class="input-grid"><div><label class="label" for="q-event">Event title</label><input id="q-event" placeholder="Team meetup"></div><div><label class="label" for="q-location">Location</label><input id="q-location" placeholder="Main hall"></div><div><label class="label" for="q-start">Starts</label><input id="q-start" type="datetime-local"></div><div><label class="label" for="q-end">Ends</label><input id="q-end" type="datetime-local"></div></div><label class="label" for="q-desc">Description</label><input id="q-desc" placeholder="Optional details">',
+    youtube: '<label class="label" for="q-youtube">YouTube video or channel URL</label><input id="q-youtube" type="url" placeholder="https://youtube.com/...">',
+    instagram: '<label class="label" for="q-instagram">Instagram profile URL or handle</label><input id="q-instagram" placeholder="https://instagram.com/yourname">',
+    app: '<label class="label" for="q-app">App Store or Google Play URL</label><input id="q-app" type="url" placeholder="https://play.google.com/...">'
 };
 const $ = id => document.getElementById(id),
     val = id => ($(id)?.value || '').trim(),
@@ -173,6 +173,8 @@ function initHome() {
             let c = document.createElement('button');
             c.type = 'button';
             c.className = 'type-card ' + (t[0] === type ? 'active' : '');
+            c.setAttribute('aria-pressed', String(t[0] === type));
+            c.setAttribute('aria-label', t[2]);
             c.dataset.type = t[0];
             c.innerHTML = `<b>${t[1]}</b><span class="type-card-title">${t[2]}</span>`;
             c.title = t[2] + ' — ' + t[3];
@@ -206,7 +208,8 @@ function initHome() {
             let b = document.createElement('button');
             b.type = 'button';
             b.className = 'template-card ' + (k === template ? 'active' : '');
-            b.innerHTML = `<i class="template-preview ${k}">▦</i><span>${k}</span>`;
+            b.setAttribute('aria-pressed', String(k === template));
+            b.innerHTML = `<i class="template-preview ${k}" aria-hidden="true">&#9638;</i><span>${k}</span>`;
             b.onclick = () => {
                 template = k;
                 drawTemplates()
@@ -217,6 +220,20 @@ function initHome() {
     drawTypes();
     drawForm();
     drawTemplates();
+    if (window.QRCodeStyling && $('heroQr')) {
+        new QRCodeStyling({
+            width: 280,
+            height: 280,
+            type: 'svg',
+            data: 'https://qrmade.vercel.app/',
+            margin: 12,
+            qrOptions: { errorCorrectionLevel: 'M' },
+            dotsOptions: { color: '#111111', type: 'square' },
+            cornersSquareOptions: { color: '#111111', type: 'square' },
+            cornersDotOptions: { color: '#111111', type: 'square' },
+            backgroundOptions: { color: '#ffffff' }
+        }).append($('heroQr'));
+    }
     $('typeSearch').oninput = e => drawTypes(e.target.value);
     $('menuButton').onclick = () => {
         let open = $('navLinks').classList.toggle('open');
@@ -226,7 +243,10 @@ function initHome() {
     function swatches(container, set) {
         $(container).querySelectorAll('.swatch').forEach(b => b.onclick = () => {
             set(b.dataset.color);
-            $(container).querySelectorAll('.swatch').forEach(x => x.classList.toggle('active', x === b));
+            $(container).querySelectorAll('.swatch').forEach(x => {
+                x.classList.toggle('active', x === b);
+                x.setAttribute('aria-pressed', String(x === b));
+            });
             contrast()
         })
     }
@@ -236,10 +256,20 @@ function initHome() {
     $('customBgColor').value = bgColor;
     $('customQrColor').oninput = e => {
         qrColor = e.target.value;
+        $('qrColorContainer').querySelectorAll('.swatch').forEach(b => {
+            const selected = b.dataset.color === qrColor;
+            b.classList.toggle('active', selected);
+            b.setAttribute('aria-pressed', String(selected));
+        });
         contrast()
     };
     $('customBgColor').oninput = e => {
         bgColor = e.target.value;
+        $('bgColorContainer').querySelectorAll('.swatch').forEach(b => {
+            const selected = b.dataset.color === bgColor;
+            b.classList.toggle('active', selected);
+            b.setAttribute('aria-pressed', String(selected));
+        });
         contrast()
     };
 
@@ -398,6 +428,12 @@ function initResult() {
         location.href = 'index.html';
         return
     }
+    if (!window.QRCodeStyling) {
+        $('status').textContent = 'QR code could not be loaded';
+        $('resultSubtitle').textContent = 'Check your connection, then return to the editor and try again.';
+        $('singleResult').classList.add('hidden');
+        return
+    }
     $('resultType').textContent = qpTypes.find(t => t[0] === s.type)[2];
     $('resultData').textContent = s.data;
     let items = (s.type === 'url' || s.type === 'text') ? s.data.split('\n').map(x => x.trim()).filter(Boolean) : [s.data],
@@ -470,7 +506,7 @@ function initResult() {
         items.forEach((x, i) => {
             let card = document.createElement('article');
             card.className = 'batch-card';
-            card.innerHTML = `<div class="batch-qr"></div><p>${x}</p><div class="batch-actions"><button>PNG</button><button>SVG</button><button>PDF</button></div>`;
+            card.innerHTML = `<div class="batch-qr" role="img" aria-label="QR code ${i + 1}"></div><p>${x}</p><div class="batch-actions"><button type="button" aria-label="Download QR ${i + 1} as PNG">PNG</button><button type="button" aria-label="Download QR ${i + 1} as SVG">SVG</button><button type="button" aria-label="Download QR ${i + 1} as PDF">PDF</button></div>`;
             $('batchGrid').append(card);
             let q = make(x, card.querySelector('.batch-qr'));
             instances.push(q);
@@ -482,19 +518,45 @@ function initResult() {
         instances = [q];
         $('caption').textContent = s.caption || '';
         $('caption').classList.toggle('has-text', !!s.caption);
-        ['png', 'svg', 'pdf'].forEach(x => $('download' + x.toUpperCase()).onclick = () => download(q, x, 'qrpoint-code'))
+        ['png', 'svg', 'pdf'].forEach(x => $('download' + x.toUpperCase()).onclick = () => download(q, x, 'qrpoint-code'));
+        $('shareQR').onclick = async () => {
+            try {
+                if (navigator.share) {
+                    const blob = await q.getRawData('png');
+                    const file = new File([blob], 'qrmade-qr.png', { type: 'image/png' });
+                    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                        await navigator.share({ files: [file], title: 'QRMade QR code' });
+                        toast('QR code shared');
+                    } else {
+                        await navigator.share({ title: 'QR code', text: s.data });
+                    }
+                } else if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(s.data);
+                    toast('QR content copied');
+                } else {
+                    toast('Sharing is not supported in this browser');
+                }
+            } catch (error) {
+                if (error.name !== 'AbortError') toast('Could not share this QR code');
+            }
+        };
     }
     $('status').textContent = batch ? `${items.length} QR codes ready` : 'Your QR is ready';
     requestAnimationFrame(() => document.body.classList.add('result-ready'));
 
     function download(q, kind, name) {
         if (kind !== 'pdf') {
-            q.download({
-                name,
-                extension: kind
-            });
-            qpTrackDownload(kind, name);
-            toast('Download started');
+            try {
+                q.download({ name, extension: kind });
+                qpTrackDownload(kind, name);
+                toast('Download started');
+            } catch (error) {
+                toast('Could not start the download');
+            }
+            return
+        }
+        if (!window.jspdf) {
+            toast('PDF export is unavailable. Try PNG or SVG.');
             return
         }
         q.getRawData('png').then(blob => {
@@ -509,7 +571,7 @@ function initResult() {
                 toast('PDF downloaded')
             };
             im.src = url
-        })
+        }).catch(() => toast('Could not create the PDF. Try PNG or SVG.'))
     }
 
     function toast(m) {
